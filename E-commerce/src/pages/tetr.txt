@@ -1,0 +1,96 @@
+import React, { useState } from "react";
+import { useParams } from "react-router";
+
+import Data from "../Data.tsx";
+
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+  CardDescription,
+  CardFooter,
+} from "../Components/ui/card";
+import { Button } from "../Components/ui/button.tsx";
+import Product from "./Product.tsx";
+const Cart = () => {
+  const [Quantity, setQuantity] = useState(
+    Data.map((Product) => ({ ...Product, quantity: 1 }))
+  );
+  const { id } = useParams();
+
+  const IncrementQuantity = (id: number) => {
+    setQuantity((prev) =>
+      prev.map((product) =>
+        product.id == id
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      )
+    );
+  };
+
+  
+  
+  
+  const IdString = id ? id.split(",").map(Number) : [];
+  
+  const CartId = Quantity.filter((p) => IdString.includes(p.id));
+  const totalPrice = CartId.reduce((acc ,item) => acc + item.price*item.quantity , 0)
+
+  const DeleteItem = (id:number) => {
+      setQuantity(prev => prev.filter(p => p.id !== id));
+  }
+  return (
+    <div className="w-full">
+      <div className="grid grid-cols-1 px-4 sm:grid-cols-2 md:grid-cols-2 md:w-full lg:grid-cols-3 gap-5 mt-5  max-w-7xl mx-auto ">
+        {CartId.map((cart) => {
+          const productQuantity =
+            Quantity.find((p) => p.id === cart.id)?.quantity || 0;
+
+          return (
+            <div key={cart.id}>
+              <Card>
+                <CardHeader>
+                  <CardTitle>
+                    <img
+                      src={cart.image}
+                      alt={cart.name}
+                      className=" w-full h-70 object-cover rounded-lg "
+                    />
+                  </CardTitle>
+                  <CardTitle>{cart.name}</CardTitle>
+                </CardHeader>
+
+                <CardContent>
+                  <CardDescription>{cart.description}</CardDescription>
+                </CardContent>
+
+                <CardFooter className="flex space-x-4">
+                  <Button onClick={() => DeleteItem(cart.id)}>Delete item</Button>
+                  <Button
+                    variant="destructive"
+                    onClick={() => IncrementQuantity(cart.id)}
+                  >
+                    Quantity + {productQuantity}
+                  </Button>
+                </CardFooter>
+              </Card>
+            </div>
+          );
+        })}
+      </div>
+   
+       
+          
+            <div className="flex mx-auto mt-2 w-9/12 fixed top-186  left-52 rounded-lg bg-amber-200 justify-center space-x-270 items-center">
+              <h1 className="font-semibold text-2xl  font-Poppins">Total</h1>
+              <p className="text-xl font-semibold ">${totalPrice}</p>
+            </div>
+          
+       
+     
+    </div>
+  );
+};
+
+export default Cart;
