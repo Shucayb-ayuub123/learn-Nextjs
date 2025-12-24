@@ -67,7 +67,7 @@ const Tasks = ({
   }
   return (
     <div className="w-full flex justify-center items-center flex-col space-y-4 mt-10">
-      { taskList.length >= 1 ? taskList.map((t , index) => (
+      { taskList.length >= 1 ? taskList.map((t) => (
         <Fragment key={t.Task_id}>
           {EditTask === t.Task_id ? (
             <UpadateTask
@@ -83,9 +83,8 @@ const Tasks = ({
                 isOverdue(t.Date1)
                   ? "bg-red-50 border-[0.2px] border-red-300"
                   : ""
-              } hover:border-cyan-500 rounded-lg animate-task`}
-              style={{transitionDelay : `${index * 80}`}}>
-              <div className={`w-full flex space-x-4 transform transition-all duration-150 ${show  ? "opacity-100 translate-x-6" : "opacity-0 translate-x-0"} `}>
+              } hover:border-cyan-500 rounded-lg ${show ? " transition-all transform opacity-100 translate-x-0" : "opacity-0 translate-x-6"}`}>
+              <div className={`w-full flex space-x-4`}>
                 <input
                   type="checkbox"
                   checked={t.complete}
