@@ -1,9 +1,0 @@
-{
-  "expo": {
-    "name": "App_dev",
-    "slug": "App_dev",
-    "web": {
-      "bundler": "metro"
-    }
-  }
-}
